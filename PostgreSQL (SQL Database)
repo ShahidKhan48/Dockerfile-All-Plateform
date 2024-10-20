@@ -1,0 +1,17 @@
+# Use official PostgreSQL image
+FROM postgres:14
+
+# Set environment variables
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_PASSWORD=mypassword
+ENV POSTGRES_DB=mydb
+
+# Expose PostgreSQL port
+EXPOSE 5432
+
+# Start PostgreSQL
+CMD ["postgres"]
+
+
+#Port: 5432 (default PostgreSQL port)
+#Context: Similar to MySQL, you can configure the environment variables.
