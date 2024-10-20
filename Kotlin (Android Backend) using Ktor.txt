@@ -1,0 +1,18 @@
+# Use official OpenJDK image
+FROM openjdk:17
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Ktor project jar
+COPY build/libs/myapp.jar /app/myapp.jar
+
+# Expose port 8080 for Ktor
+EXPOSE 8080
+
+# Run the Ktor server
+CMD ["java", "-jar", "myapp.jar"]
+
+
+#Port: 8080 (default for Ktor apps)
+#Context: The Kotlin project should be packaged as a jar (myapp.jar) and copied into the Docker container.
