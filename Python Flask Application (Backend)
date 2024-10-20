@@ -1,0 +1,22 @@
+# Use official Python image
+FROM python:3.9
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy requirements.txt and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application
+COPY . .
+
+# Expose the Flask app on port 5000
+EXPOSE 5000
+
+# Start the Flask app
+CMD ["python", "app.py"]
+
+
+#Port: 5000 (default Flask port)
+#Context: The requirements.txt should list all the Python packages required by your Flask app, and your app should have an entry point in app.py.
