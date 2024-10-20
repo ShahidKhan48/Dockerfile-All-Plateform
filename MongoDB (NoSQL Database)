@@ -1,0 +1,12 @@
+# Use official MongoDB image
+FROM mongo:5.0
+
+# Expose port for MongoDB
+EXPOSE 27017
+
+# Start MongoDB
+CMD ["mongod"]
+
+
+# Port: 27017 (default MongoDB port)
+# Context: MongoDB Dockerfile is used for setting up the database.
