@@ -1,0 +1,11 @@
+# Use official Nginx image from DockerHub
+FROM nginx:latest
+
+# Copy the static website content to the Nginx default location
+COPY ./html /usr/share/nginx/html
+
+# Expose port 80 to serve the web traffic
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
