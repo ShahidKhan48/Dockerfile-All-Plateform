@@ -9,3 +9,8 @@ EXPOSE 80
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
+
+
+
+####Port: 80 (standard for HTTP)
+###Context: This Dockerfile assumes you have your HTML files in a folder named html at the root of your project.

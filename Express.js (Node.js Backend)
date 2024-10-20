@@ -16,3 +16,9 @@ EXPOSE 5000
 
 # Start the Node.js application
 CMD ["npm", "start"]
+
+
+
+
+##Port: 5000 (Node.js server port)
+##Context: Your Express.js app should have a package.json with a script "start": "node index.js" or similar.
