@@ -1,0 +1,19 @@
+# Use official Flutter image
+FROM cirrusci/flutter:stable
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Flutter project files
+COPY . .
+
+# Expose port for Flutter web (if building a web app)
+EXPOSE 8080
+
+# Run Flutter web or mobile builds
+CMD ["flutter", "run", "--web-port", "8080"]
+
+
+
+#Port: 8080 (for Flutter web)
+#Context: This Dockerfile is for running a Flutter app in web mode. For mobile, you can use it as a development environment.
