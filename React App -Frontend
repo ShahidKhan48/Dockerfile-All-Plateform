@@ -22,3 +22,8 @@ EXPOSE 3000
 
 # Start the app
 CMD ["serve", "-s", "build", "-l", "3000"]
+
+
+
+#Port: 3000 (React’s default development server port)
+##Context: The React project’s package.json should be in the root directory.
