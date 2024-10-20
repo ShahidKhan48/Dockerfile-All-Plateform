@@ -1,0 +1,29 @@
+# Use official Node.js image
+FROM node:16
+
+# Install Expo CLI globally
+RUN npm install -g expo-cli
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy the React Native project files
+COPY . .
+
+# Expose ports for the Expo DevTools
+EXPOSE 19000 19001 19002
+
+# Start the Expo app
+CMD ["expo", "start", "--tunnel"]
+
+
+#Ports:
+
+# 19000: Metro bundler for React Native.
+# 19001: Expo DevTools server.
+# 19002: Expo Web preview.
+#Context: The React Native app should have a package.json with the necessary dependencies.
