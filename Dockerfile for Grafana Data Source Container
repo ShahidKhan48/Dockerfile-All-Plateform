@@ -1,0 +1,78 @@
+# Use base image for Ubuntu or Debian
+FROM ubuntu:20.04
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    gnupg2 \
+    software-properties-common \
+    unzip \
+    mysql-server \
+    openjdk-11-jre \
+    net-tools \
+    apt-transport-https
+
+# Install Prometheus
+RUN wget https://github.com/prometheus/prometheus/releases/download/v2.42.0/prometheus-2.42.0.linux-amd64.tar.gz && \
+    tar -xvf prometheus-2.42.0.linux-amd64.tar.gz && \
+    mv prometheus-2.42.0.linux-amd64 /opt/prometheus
+
+# Install Zabbix
+RUN wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-server-mysql/zabbix-server-mysql_6.0.12-1%2Bubuntu20.04_amd64.deb && \
+    dpkg -i zabbix-server-mysql_6.0.12-1+ubuntu20.04_amd64.deb
+
+# Install Mimir
+RUN wget https://github.com/grafana/mimir/releases/download/v2.5.0/mimir-all-in-one-linux-amd64 && \
+    chmod +x mimir-all-in-one-linux-amd64 && \
+    mv mimir-all-in-one-linux-amd64 /usr/local/bin/mimir
+
+# Install Tempo
+RUN wget https://github.com/grafana/tempo/releases/download/v2.1.0/tempo_2.1.0_linux_amd64.zip && \
+    unzip tempo_2.1.0_linux_amd64.zip && \
+    mv tempo /usr/local/bin/tempo
+
+# Install Loki
+RUN wget https://github.com/grafana/loki/releases/download/v2.8.0/loki-linux-amd64.zip && \
+    unzip loki-linux-amd64.zip && \
+    mv loki-linux-amd64 /usr/local/bin/loki
+
+# Install MySQL
+RUN apt-get install -y mysql-server
+
+# Install Elasticsearch
+RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.10.0-amd64.deb && \
+    dpkg -i elasticsearch-8.10.0-amd64.deb
+
+# Install kube-state-metrics for Kubernetes monitoring
+RUN curl -LO https://github.com/kubernetes/kube-state-metrics/releases/download/v2.6.0/kube-state-metrics-v2.6.0-linux-amd64.tar.gz && \
+    tar -xvf kube-state-metrics-v2.6.0-linux-amd64.tar.gz && \
+    mv kube-state-metrics-v2.6.0-linux-amd64/kube-state-metrics /usr/local/bin/
+
+# Install node_exporter for app monitoring
+RUN wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz && \
+    tar -xvf node_exporter-1.5.0.linux-amd64.tar.gz && \
+    mv node_exporter-1.5.0.linux-amd64/node_exporter /usr/local/bin/
+
+# Expose necessary ports for each data source
+EXPOSE 9090  # Prometheus
+EXPOSE 10051 # Zabbix
+EXPOSE 3100  # Loki
+EXPOSE 3200  # Tempo
+EXPOSE 9009  # Mimir
+EXPOSE 3306  # MySQL
+EXPOSE 9200  # Elasticsearch
+EXPOSE 8080  # K8s monitoring (kube-state-metrics)
+EXPOSE 9100  # App monitoring (node_exporter)
+
+# Start all the data sources (simplified example)
+CMD ["/bin/bash", "-c", "nohup /opt/prometheus/prometheus & \
+    nohup zabbix_server & \
+    nohup mimir & \
+    nohup tempo & \
+    nohup loki & \
+    nohup mysqld_safe & \
+    nohup elasticsearch & \
+    nohup kube-state-metrics & \
+    nohup node_exporter & \
+    tail -f /dev/null"]
